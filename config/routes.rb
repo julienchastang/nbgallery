@@ -65,6 +65,7 @@ Rails.application.routes.draw do # rubocop: disable Metrics/BlockLength
       get 'reviews'
       get 'metadata'
       get 'download'
+      get 'launch'
       get 'shares'
       get 'uuid'
       get 'friendly_url'

@@ -4,7 +4,27 @@
 
 One of the benefits of nbgallery is its two-way integration with Jupyter.  You can launch notebooks from nbgallery into Jupyter with a single click.  Within Jupyter, the Gallery menu enables you to save notebooks to nbgallery and submit change requests to other notebook authors.
 
-If you're using our [docker image](https://hub.docker.com/r/nbgallery/jupyter-alpine/) to run Jupyter, it's already configured to integrate with nbgallery.  When you launch the docker container, just set the environment variable `NBGALLERY_URL` to the location of your nbgallery instance.  When you visit the Jupyter `/tree` page, it will register a Jupyter "environment" with nbgallery.  When you click the `Run in Jupyter` button in nbgallery, it will launch the notebook into that Jupyter environment.  If you have more than one Jupyter environment configured, you can set one as default or have nbgallery prompt you when you click `Run in Jupyter`.
+`Run in Jupyter` now launches through an external `nblaunch` service using short-lived signed URLs generated server-side by nbgallery.
+
+Required server configuration:
+
+* `NBLAUNCH_SHARED_SECRET` (required): shared HMAC secret used to sign launch requests.
+* `NBLAUNCH_BASE_URL` (required): base launcher URL for your deployment, for example:
+  * `https://<your-jupyterhub>/services/nblaunch/launch`
+
+The launch URL format is:
+
+```
+<NBLAUNCH_BASE_URL>?nb=<NOTEBOOK_ID>&ts=<UNIX_EPOCH_SECONDS>&sig=<HMAC_SHA256_HEX>
+```
+
+Where:
+
+* `nb` is the notebook identifier only (no `.nb` or `.ipynb` suffix).
+* `ts` is the current unix timestamp in seconds.
+* `sig` is `HMAC_SHA256(NBLAUNCH_SHARED_SECRET, "#{nb}:#{ts}")` as lowercase hex.
+
+These links are generated just-in-time when the button is clicked, so they remain valid within the launcher TTL window.
 
 You can launch a full suite of nbgallery/mysql/solr plus an integrated Jupyter instance using our docker compose files:
 
@@ -14,7 +34,9 @@ docker-compose -f docker-compose.yml -f docker-compose-with-jupyter.yml up
 
 ## Technical details
 
-Both directions of the integration are implemented with [cross-domain](https://en.wikipedia.org/wiki/Cross-origin_resource_sharing) [Ajax](https://en.wikipedia.org/wiki/Ajax_(programming)).  This means that notebooks are bounced through the browser -- nbgallery does not communicate directly with Jupyter or vice versa.  For example, when you click `Run in Jupyter`, we use Ajax to download the notebook from nbgallery and then upload it into Jupyter.  To enable cross-domain requests, nbgallery's CORS configuration (see [application.rb](../config/application.rb)) allows requests to a necessary subset of API endpoints from any origin (because you can have multiple Jupyter instances at arbitrary locations).  On the other side, Jupyter's CORS configuration limits the origin to the `NBGALLERY_URL`.
+For notebook launch, nbgallery now performs a server-side redirect to a signed `nblaunch` URL.  The signing secret is never exposed to the browser.
+
+The legacy cross-domain Ajax upload flow is still relevant for older integrations and optional extensions, but it is no longer the primary `Run in Jupyter` launch path.
 
 ## Optional integration scripts
 
@@ -35,11 +57,12 @@ You can add custom javascripts to your nbgallery instance through our extension 
 If you're not using our docker image for Jupyter, you can still configure Jupyter to integrate with nbgallery:
 
  * Install our [jupyter_nbgallery extension](https://github.com/nbgallery/nbgallery-extensions).  This contains a server extension for uploading notebooks and a UI extension to add the Gallery menu.
- * Set the following [configuration settings](https://jupyter-notebook.readthedocs.io/en/stable/config.html) in `jupyter_notebook_config.py` ([here's ours](https://github.com/nbgallery/jupyter-alpine/blob/master/config/jupyter/jupyter_notebook_config.py)) or on the command line:
+ * Set the following [configuration settings](https://jupyter-notebook.readthedocs.io/en/stable/config.html) in `jupyter_notebook_config.py` ([here's ours](https://github.com/nbgallery/jupyter-alpine/blob/master/config/jupyter/jupyter_notebook_config.py)) or on the command line (for legacy browser-based integrations):
    * `JupyterApp.allow_origin = <URL of your nbgallery instance>`
    * `JupyterApp.allow_credentials = True`
    * `JupyterApp.disable_check_xsrf = True` (note this reduces the security of Jupyter but is necessary for the `Run in Jupyter` button to work)
  * Add an nbgallery section to Jupyter's `nbconfig/common.json`, usually found in `~/.jupyter/nbconfig` ([here's ours](https://github.com/nbgallery/jupyter-alpine/blob/master/config/jupyter/nbconfig/common.json)).  At a minimum, you need to set the URL of your nbgallery instance.  You can also set the client name here; that will show up as the environment name in nbgallery.  Any desired integration scripts (described above) should be enabled here as well.
 
-We believe this is possible with JupyterHub as well, but we haven't tried it ourselves.  If you've tried it, please [let us know how it went](https://github.com/nbgallery/nbgallery/issues/new).
+For `nblaunch`-based launch, configure the `NBLAUNCH_*` settings on the nbgallery server and deploy a compatible launcher service endpoint.
 
+We believe this is possible with JupyterHub as well, but we haven't tried it ourselves.  If you've tried it, please [let us know how it went](https://github.com/nbgallery/nbgallery/issues/new).

@@ -6,7 +6,9 @@
           ==render partial: "custom_run_in_jupyter", locals: { nb: nb, ref: defined?(ref) ? ref: nil }
         ==output
         -if output.blank?
-          a.run_jupyter href="#{notebook_path(nb.uuid)}" Run in Jupyter
-          input type="hidden" value="#{(defined?(ref) && !ref.blank? ? ('?ref=' + ref) : '')}"
+          -if nblaunch_enabled_for?(nb)
+            a.run_jupyter href="#{launch_notebook_path(nb)}" target="_blank" rel="noopener noreferrer" data-direct-launch="true" Run in Jupyter
+          -else
+            a.run_jupyter.disabled style="cursor: not-allowed; opacity: 0.6;" Run in Jupyter
       -else
         a.run_jupyter.disabled style="cursor: not-allowed; opacity: 0.6;" Run in Jupyter

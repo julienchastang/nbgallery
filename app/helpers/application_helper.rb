@@ -105,4 +105,48 @@ module ApplicationHelper
   def link_to_group(group)
     link_to(group.name, group)
   end
+
+  def nblaunch_url_for(notebook_or_id, ts: Time.now.to_i)
+    notebook_id = normalize_nblaunch_notebook_id(
+      notebook_or_id.respond_to?(:to_param) ? notebook_or_id.to_param : notebook_or_id
+    )
+    return nil if notebook_id.nil?
+
+    secret = nblaunch_shared_secret
+    return nil if secret.blank?
+    base_url = nblaunch_base_url
+    return nil if base_url.blank?
+
+    require 'openssl'
+    payload = "#{notebook_id}:#{ts.to_i}"
+    sig = OpenSSL::HMAC.hexdigest('SHA256', secret, payload)
+    query = Rack::Utils.build_query(nb: notebook_id, ts: ts.to_i, sig: sig)
+    "#{base_url}?#{query}"
+  end
+
+  def nblaunch_enabled_for?(notebook_or_id)
+    normalize_nblaunch_notebook_id(
+      notebook_or_id.respond_to?(:to_param) ? notebook_or_id.to_param : notebook_or_id
+    ).present? && nblaunch_shared_secret.present? && nblaunch_base_url.present?
+  end
+
+  def normalize_nblaunch_notebook_id(raw_id)
+    notebook_id = raw_id.to_s.strip
+    return nil if notebook_id.empty?
+
+    notebook_id = notebook_id.sub(/\.(ipynb|nb)\z/i, '')
+    return nil unless notebook_id.match?(/\A[a-z0-9][a-z0-9-]*\z/i)
+
+    notebook_id
+  end
+
+  def nblaunch_base_url
+    ENV['NBLAUNCH_BASE_URL'].presence ||
+      GalleryConfig.dig(:nblaunch, :base_url).presence
+  end
+
+  def nblaunch_shared_secret
+    ENV['NBLAUNCH_SHARED_SECRET'].presence ||
+      GalleryConfig.dig(:nblaunch, :shared_secret).presence
+  end
 end

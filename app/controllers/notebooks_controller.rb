@@ -13,6 +13,7 @@ class NotebooksController < ApplicationController
     friendly_url
   ]
   member_readers_login = %i[
+    launch
     similar
     metrics
     metrics_stars
@@ -406,6 +407,18 @@ class NotebooksController < ApplicationController
     gallery['gallery_url'] = request.base_url
 
     send_data(jn.to_json, filename: "#{@notebook.title}.ipynb")
+  end
+
+  # GET /notebooks/:uuid/launch
+  def launch
+    launch_url = helpers.nblaunch_url_for(@notebook)
+    if launch_url.blank?
+      render json: { message: 'Run in Jupyter is not configured.' }, status: :service_unavailable
+      return
+    end
+
+    response.headers['Cache-Control'] = 'no-store'
+    redirect_to launch_url, allow_other_host: true
   end
 
   # GET /notebooks/:uuid/shares

@@ -31,6 +31,10 @@ $(document).ready(function() {
   });
 
   $(document).on('click','.run_jupyter', function() {
+    if ($(this).data('direct-launch')) {
+      return true;
+    }
+
     loadingGif();
     //Set the notebook id which we'll use later
     var id = $(this).attr('href');

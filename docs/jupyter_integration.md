@@ -26,6 +26,31 @@ Where:
 
 These links are generated just-in-time when the button is clicked, so they remain valid within the launcher TTL window.
 
+## Using JupyterHub as the nbgallery login provider
+
+nbgallery can also use JupyterHub itself as its OAuth identity provider. This works well when JupyterHub already delegates login to an upstream identity provider such as CILogon. In that deployment model, nbgallery acts as a standard OAuth client of the Hub, then maps the Hub user to a local Rails `User` record and signs them into the normal nbgallery session.
+
+Required nbgallery configuration:
+
+* `JUPYTERHUB_BASE_URL` or `jupyterhub_auth.hub_url`: base Hub URL, for example `https://jupyterhub.unidata.ucar.edu`
+* `JUPYTERHUB_CLIENT_ID` or `jupyterhub_auth.client_id`
+* `JUPYTERHUB_CLIENT_SECRET` or `jupyterhub_auth.client_secret`
+
+Optional configuration:
+
+* `jupyterhub_auth.scopes`: extra scopes to request from the Hub OAuth flow
+* `jupyterhub_auth.email_claims`, `first_name_claims`, `last_name_claims`, `display_name_claims`: claim lookup order for mapping Hub user data to local users
+* `jupyterhub_auth.fallback_email_domain`: synthetic email domain to use if the Hub user payload does not include an email address
+* `jupyterhub_auth.link_existing_by_email` / `link_existing_by_username`: whether to attach an existing local Rails account before creating a new one
+
+The default Hub endpoints are:
+
+* authorize: `/hub/api/oauth2/authorize`
+* token: `/hub/api/oauth2/token`
+* user lookup: `/hub/api/user`
+
+The callback endpoint exposed by nbgallery is `/auth/jupyterhub/callback`. Register that redirect URI with the JupyterHub service or OAuth client.
+
 You can launch a full suite of nbgallery/mysql/solr plus an integrated Jupyter instance using our docker compose files:
 
 ```

@@ -1,0 +1,4 @@
+one:
+  uid: existing-user
+  provider: jupyterhub
+  user: one

@@ -106,6 +106,39 @@ module ApplicationHelper
     link_to(group.name, group)
   end
 
+
+  def jupyterhub_oauth_enabled?
+    jupyterhub_client_id.present? &&
+      jupyterhub_client_secret.present? &&
+      jupyterhub_base_url.present?
+  end
+
+  def jupyterhub_login_path_for(return_to: nil)
+    params = {}
+    params[:return_to] = return_to if return_to.present?
+    jupyterhub_oauth_start_path(params)
+  end
+
+  def jupyterhub_login_label
+    GalleryConfig.dig(:jupyterhub_auth, :login_button_label).presence ||
+      'Log in with JupyterHub'
+  end
+
+  def jupyterhub_base_url
+    ENV['JUPYTERHUB_BASE_URL'].presence ||
+      GalleryConfig.dig(:jupyterhub_auth, :hub_url).presence
+  end
+
+  def jupyterhub_client_id
+    ENV['JUPYTERHUB_CLIENT_ID'].presence ||
+      GalleryConfig.dig(:jupyterhub_auth, :client_id).presence
+  end
+
+  def jupyterhub_client_secret
+    ENV['JUPYTERHUB_CLIENT_SECRET'].presence ||
+      GalleryConfig.dig(:jupyterhub_auth, :client_secret).presence
+  end
+
   def nblaunch_url_for(notebook_or_id, ts: Time.now.to_i)
     notebook_id = normalize_nblaunch_notebook_id(
       notebook_or_id.respond_to?(:to_param) ? notebook_or_id.to_param : notebook_or_id

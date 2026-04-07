@@ -8,6 +8,10 @@ Rails.application.routes.draw do # rubocop: disable Metrics/BlockLength
                                     passwords: 'passwords',
                                     omniauth_callbacks: 'callbacks' }
 
+  get 'auth/jupyterhub' => 'jupyterhub_oauth#start', as: :jupyterhub_oauth_start
+  get 'auth/jupyterhub/callback' => 'jupyterhub_oauth#callback', as: :jupyterhub_oauth_callback
+  get 'auth/jupyterhub/failure' => 'jupyterhub_oauth#failure', as: :jupyterhub_oauth_failure
+
   # Group pages
   resources :groups do
     member do

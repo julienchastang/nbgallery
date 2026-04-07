@@ -261,6 +261,33 @@ languages:
     thumbnail: groovy_thumbnail.png
     caption: "Apache, jump on it!"
 
+# JupyterHub as OAuth identity provider for nbgallery
+jupyterhub_auth:
+  hub_url:
+  client_id:
+  client_secret:
+  authorize_path: "/hub/api/oauth2/authorize"
+  token_path: "/hub/api/oauth2/token"
+  user_path: "/hub/api/user"
+  scopes: []
+  username_claims:
+    - "name"
+  email_claims:
+    - "email"
+  first_name_claims:
+    - "first_name"
+    - "given_name"
+  last_name_claims:
+    - "last_name"
+    - "family_name"
+  display_name_claims:
+    - "display_name"
+    - "name"
+  fallback_email_domain:
+  link_existing_by_email: true
+  link_existing_by_username: true
+  login_button_label: "Log in with JupyterHub"
+
 #If username_login_allowed is set to false, registration is disabled
 username_login_allowed: true
 # Users who authenticate with oauth are still automatically registered

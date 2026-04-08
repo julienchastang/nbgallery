@@ -1,0 +1,9 @@
+div.sso-login-gateway
+  h1.center id=(local_assigns[:title_id]) Sign in to NBGallery
+  p.sso-login-subtitle id=(local_assigns[:description_id]) Use your Unidata JupyterHub account to continue
+  -if jupyterhub_oauth_enabled?
+    a.btn.btn-primary.btn-lg.sso-login-button href="#{jupyterhub_login_path_for(return_to: local_assigns[:return_to] || request.fullpath)}"
+      | Continue with Unidata JupyterHub
+    p.help-block You will be redirected to Unidata JupyterHub for authentication.
+  -else
+    p.help-block JupyterHub sign-in is not configured.

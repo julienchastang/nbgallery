@@ -556,3 +556,29 @@ table .form-group {
 #stagePrivateFormGroup {
     margin-bottom: 10px;
 }
+
+.sso-loginmodal-container {
+    .sso-login-gateway {
+        margin-top: 1.25em;
+        text-align: center;
+    }
+    .sso-login-button {
+        margin-top: 1em;
+        padding: 14px 20px;
+        white-space: normal;
+        width: 100%;
+    }
+    .sso-login-button.btn-primary,
+    .sso-login-button.btn-primary:focus,
+    .sso-login-button.btn-primary:hover {
+        color: #fff;
+        text-shadow: none;
+    }
+    .sso-login-subtitle {
+        color: #555;
+        margin: .75em 0 0;
+    }
+    .help-block {
+        margin: .9em 0 0;
+    }
+}

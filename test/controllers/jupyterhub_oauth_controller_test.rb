@@ -47,6 +47,24 @@ class JupyterhubOauthControllerTest < ActionController::TestCase
     assert_equal users(:one).id, @controller.current_user.id
   end
 
+  test 'callback uses email-shaped hub username when email is missing' do
+    session[:jupyterhub_oauth_state] = 'expected-state'
+
+    assert_difference('User.count', 1) do
+      assert_difference('Identity.count', 1) do
+        @controller.stub(:exchange_code_for_token, { 'access_token' => 'token-123' }) do
+          @controller.stub(:fetch_hub_user, { 'name' => 'user@example.edu', 'first_name' => 'Test', 'last_name' => 'User' }) do
+            get :callback, params: { code: 'oauth-code', state: 'expected-state' }
+          end
+        end
+      end
+    end
+
+    user = User.order(:id).last
+    assert_equal 'user@example.edu', user.email
+    assert_equal 'user@example.edu', Identity.order(:id).last.uid
+  end
+
   test 'callback creates a local user when no linked account exists' do
     session[:jupyterhub_oauth_state] = 'expected-state'
 

@@ -39,8 +39,8 @@ Required nbgallery configuration:
 Optional configuration:
 
 * `jupyterhub_auth.scopes`: extra scopes to request from the Hub OAuth flow
-* `jupyterhub_auth.email_claims`, `first_name_claims`, `last_name_claims`, `display_name_claims`: claim lookup order for mapping Hub user data to local users
-* `jupyterhub_auth.fallback_email_domain`: synthetic email domain to use if the Hub user payload does not include an email address
+* `jupyterhub_auth.email_claims`, `first_name_claims`, `last_name_claims`, `display_name_claims`: claim lookup order for mapping Hub user data to local users. The default email claim is `email`.
+* `jupyterhub_auth.fallback_email_domain`: synthetic email domain to use if the Hub user payload does not include an email address and the Hub username is not already email-shaped
 * `jupyterhub_auth.link_existing_by_email` / `link_existing_by_username`: whether to attach an existing local Rails account before creating a new one
 
 The default Hub endpoints are:
@@ -50,6 +50,8 @@ The default Hub endpoints are:
 * user lookup: `/hub/api/user`
 
 The callback endpoint exposed by nbgallery is `/auth/jupyterhub/callback`. Register that redirect URI with the JupyterHub service or OAuth client.
+
+When `/hub/api/user` omits a dedicated `email` field, nbgallery will fall back to the Hub username if it already looks like an email address, which is common for deployments that use email-shaped usernames.
 
 You can launch a full suite of nbgallery/mysql/solr plus an integrated Jupyter instance using our docker compose files:
 

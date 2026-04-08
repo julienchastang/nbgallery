@@ -4406,3 +4406,32 @@ body.larger-text-mode {
         min-width: 340px !important;
     }
 }
+
+.sso-login-gateway {
+    margin: 2em auto 0;
+    max-width: 32rem;
+    text-align: center;
+}
+
+.sso-login-gateway .sso-login-subtitle {
+    color: #555;
+    font-size: 1.05em;
+    margin: .75em 0 0;
+}
+
+.sso-login-gateway .sso-login-button {
+    margin-top: 1.5em;
+    padding: 14px 22px;
+    white-space: normal;
+}
+
+.sso-login-gateway .sso-login-button.btn-primary,
+.sso-login-gateway .sso-login-button.btn-primary:focus,
+.sso-login-gateway .sso-login-button.btn-primary:hover {
+    color: #fff;
+    text-shadow: none;
+}
+
+.sso-login-gateway .help-block {
+    margin-top: .9em;
+}

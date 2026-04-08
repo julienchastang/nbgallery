@@ -32,6 +32,7 @@ class JupyterhubOauthController < ApplicationController
     token_response = exchange_code_for_token(params[:code])
     access_token = token_response.fetch('access_token')
     hub_user = fetch_hub_user(access_token)
+    Rails.logger.debug("JupyterHub user payload: #{hub_user.inspect}") if Rails.env.development?
     user = find_or_create_user_from_jupyterhub!(hub_user)
 
     if GalleryConfig.registration.require_admin_approval && !user.approved?
@@ -146,16 +147,15 @@ class JupyterhubOauthController < ApplicationController
   end
 
   def find_existing_local_user(hub_user, uid)
-    email = extract_claim(hub_user, jupyterhub_email_claims)
+    email = resolve_hub_email(hub_user, uid)
     user = User.find_by(email: email) if email.present? && jupyterhub_link_existing_by_email?
     user ||= User.find_by(user_name: normalize_jupyterhub_username(uid)) if jupyterhub_link_existing_by_username?
     user
   end
 
   def create_local_user_from_hub!(hub_user, uid)
-    email = extract_claim(hub_user, jupyterhub_email_claims)
-    email ||= fallback_email_for(uid)
-    raise 'JupyterHub user did not provide an email address.' if email.blank?
+    email = resolve_hub_email(hub_user, uid)
+    raise 'JupyterHub user did not provide a usable email address.' if email.blank?
 
     attrs = {
       email: email,
@@ -173,7 +173,7 @@ class JupyterhubOauthController < ApplicationController
   def sync_user_from_hub!(user, hub_user, uid)
     attrs = {}
 
-    email = extract_claim(hub_user, jupyterhub_email_claims)
+    email = resolve_hub_email(hub_user, uid)
     attrs[:email] = email if email.present? && user.email != email
 
     first_name = extract_first_name(hub_user)
@@ -221,6 +221,22 @@ class JupyterhubOauthController < ApplicationController
 
     local_part = normalize_jupyterhub_username(uid).tr('@', '-')
     "#{local_part}@#{domain}"
+  end
+
+  def resolve_hub_email(hub_user, uid)
+    email = extract_claim(hub_user, jupyterhub_email_claims)
+    return email if valid_email?(email)
+
+    return uid if valid_email?(uid)
+
+    username = extract_claim(hub_user, jupyterhub_username_claims)
+    return username if valid_email?(username)
+
+    fallback_email_for(uid)
+  end
+
+  def valid_email?(value)
+    value.present? && value.to_s.match?(URI::MailTo::EMAIL_REGEXP)
   end
 
   def extract_hub_uid(hub_user)

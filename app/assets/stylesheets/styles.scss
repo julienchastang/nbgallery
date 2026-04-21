@@ -404,6 +404,10 @@ body.user-anonymous #headerIcons #learnMore {
         color: $secondary-color;
     }
 }
+.learn-more-container {
+    display: inline-block;
+    position: relative;
+}
 .header-buttons,
 .header-nav {
     display: inline-block;
@@ -586,12 +590,11 @@ span.review-alert {
 }
 #learnMoreDropdown {
     display: none;
-    right: 30px;
+    left: auto;
+    right: 0;
+    top: 100%;
     &.expand {
         display: block;
-    }
-    @media all and (min-width: 921px) {
-        right: 38px;
     }
 }
 .dropdown-menu .createGroup > a:hover,

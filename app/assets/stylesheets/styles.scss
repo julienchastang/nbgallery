@@ -390,6 +390,20 @@ body.user-anonymous #headerIcons .sign-in-cta {
     margin-left: 8px;
     padding: 6px 12px;
 }
+body.user-anonymous #headerIcons #learnMore {
+    margin-left: 18px;
+    .fa {
+        color: $lighter-icon-color;
+        font-size: 18px;
+    }
+    .caret {
+        opacity: .65;
+    }
+    &:focus .fa,
+    &:hover .fa {
+        color: $secondary-color;
+    }
+}
 .header-buttons,
 .header-nav {
     display: inline-block;

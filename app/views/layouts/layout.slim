@@ -126,25 +126,6 @@ html lang="en"
                           li.createGroup
                             a.center.dropdownGroup.modal-activate href="#" aria-haspopup="true" data-target="#newGroup" data-toggle="modal" class="dropdown-toggle"
                               button.btn.btn-primary.createGroup Create Group
-                      a.tooltips href="#" title="Learn More" id="learnMore" aria-haspopup="true" aria-expanded="false"
-                        span.sr-only tabindex="-1" id="learnMoreDropdownAriaLabel" Expand Learn More Menu
-                        i.fa.fa-question-circle tabindex="-1" aria-hidden="true" class="dropdown-toggle"
-                        b.caret tabindex="-1" class="dropdown-toggle"
-                      ul.dropdown-menu id="learnMoreDropdown" tabindex="-1" style="display: none"
-                        li.dropdown-header.filter-item tabindex="-1" Documentation
-                        li
-                          a tabindex="0" href="#{notebooks_path}?q=" Advanced Search
-                        li id="learnMoreLink"
-                          a href="#" rel="external" What is Jupyter?
-                        li id="notebookHowToNBG"
-                          a href="#{docs_utilizing_notebooks_path}" Notebooks
-                        li id="environmentHowToNBG"
-                          a href="#{docs_utilizing_environments_path}" Environments
-                        li
-                          a href="#{notebooks_path}?q=" Advanced Search
-                        -if GalleryConfig.reviews_enabled
-                          li id="nbReviewHowTo"
-                            a href="#{docs_notebook_review_path}" Notebook Reviews
                       br.hidden
                       -if @user.member?
                         a.dropdown-toggle.modal-activate href="#" id="gearDropdown" aria-haspopup="true" data-toggle="dropdown" aria-expanded="false"
@@ -165,8 +146,27 @@ html lang="en"
                           i.fa.fa-user aria-hidden="true"
                           b.caret
                       -else
-                        a.btn.btn-primary.navbar-btn.sign-in-cta href="#" id="signInCta" aria-label="Sign in"
+                        a.btn.btn-primary.navbar-btn.sign-in-cta.tooltips href="#" id="signInCta" title="Sign in with Unidata JupyterHub" aria-label="Sign in with Unidata JupyterHub"
                           | Sign in
+                      a.tooltips href="#" title="Learn More" id="learnMore" aria-haspopup="true" aria-expanded="false"
+                        span.sr-only tabindex="-1" id="learnMoreDropdownAriaLabel" Expand Learn More Menu
+                        i.fa.fa-question-circle tabindex="-1" aria-hidden="true" class="dropdown-toggle"
+                        b.caret tabindex="-1" class="dropdown-toggle"
+                      ul.dropdown-menu id="learnMoreDropdown" tabindex="-1" style="display: none"
+                        li.dropdown-header.filter-item tabindex="-1" Documentation
+                        li
+                          a tabindex="0" href="#{notebooks_path}?q=" Advanced Search
+                        li id="learnMoreLink"
+                          a href="#" rel="external" What is Jupyter?
+                        li id="notebookHowToNBG"
+                          a href="#{docs_utilizing_notebooks_path}" Notebooks
+                        li id="environmentHowToNBG"
+                          a href="#{docs_utilizing_environments_path}" Environments
+                        li
+                          a href="#{notebooks_path}?q=" Advanced Search
+                        -if GalleryConfig.reviews_enabled
+                          li id="nbReviewHowTo"
+                            a href="#{docs_notebook_review_path}" Notebook Reviews
                       -if @user.member?
                         div id="gearDropdownMenu" style="display: none"
                           ul.dropdown-menu.cog style=(@user.shares.count > 0 ? "min-width: 265px" : "")

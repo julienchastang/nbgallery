@@ -146,9 +146,9 @@ html lang="en"
                           li id="nbReviewHowTo"
                             a href="#{docs_notebook_review_path}" Notebook Reviews
                       br.hidden
-                      a.dropdown-toggle.modal-activate href="#" id="gearDropdown" aria-haspopup="true" data-toggle=(@user.member? ? "" : "dropdown") aria-expanded="false"
-                        span.sr-only id="gearDropdownAriaLabel" Expand User Menu
-                        -if @user.member?
+                      -if @user.member?
+                        a.dropdown-toggle.modal-activate href="#" id="gearDropdown" aria-haspopup="true" data-toggle="dropdown" aria-expanded="false"
+                          span.sr-only id="gearDropdownAriaLabel" Expand User Menu
                           -sql_statement = "reviewer_id = #{@user.id} and status = 'claimed'"
                           -open_reviews = Review.where(sql_statement).count
                           -sql_statement = "user_id = #{@user.id} and review_id in (select id from reviews where id = review_id and status = 'queued')"
@@ -164,8 +164,9 @@ html lang="en"
                             /*span.review-alert ==open_change_requests + total_open_reviews*/
                           i.fa.fa-user aria-hidden="true"
                           b.caret
-                        -else
-                          i.fa.fa-user aria-hidden="true"
+                      -else
+                        a.btn.btn-primary.navbar-btn.sign-in-cta href="#" id="signInCta" aria-label="Sign in"
+                          | Sign in
                       -if @user.member?
                         div id="gearDropdownMenu" style="display: none"
                           ul.dropdown-menu.cog style=(@user.shares.count > 0 ? "min-width: 265px" : "")

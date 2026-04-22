@@ -326,15 +326,11 @@ body.page-admin header {
     }
     .dropdown.navbar-right > a {
         display: inline-block;
-        margin-left: 5px;
         outline: 0;
         .gear {
             outline: 0;
             padding-left: 0;
         }
-    }
-    .dropdown.navbar-right > #gearDropdown {
-        margin-left: 3px;
     }
     .dropdown.navbar-right > a:hover .gear,
     .dropdown.navbar-right > a:focus .gear,
@@ -387,11 +383,9 @@ body.page-admin header {
 }
 body.user-anonymous #headerIcons .sign-in-cta {
     line-height: 1.4;
-    margin-left: 8px;
     padding: 6px 12px;
 }
 body.user-anonymous #headerIcons #learnMore {
-    margin-left: 18px;
     .fa {
         color: $lighter-icon-color;
         font-size: 18px;
@@ -540,6 +534,9 @@ span.review-alert {
 }
 #headerIcons {
     transition: .25s all;
+    > * + * {
+        margin-left: 12px;
+    }
     span.review-alert {
       font-size: 81%;
       left: 4.5em;

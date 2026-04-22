@@ -128,7 +128,7 @@ html lang="en"
                               button.btn.btn-primary.createGroup Create Group
                       br.hidden
                       -if @user.member?
-                        a.dropdown-toggle.modal-activate href="#" id="gearDropdown" aria-haspopup="true" data-toggle="dropdown" aria-expanded="false"
+                        a.dropdown-toggle.modal-activate.tooltips href="#" id="gearDropdown" title="Account" aria-haspopup="true" data-toggle="dropdown" aria-expanded="false"
                           span.sr-only id="gearDropdownAriaLabel" Expand User Menu
                           -sql_statement = "reviewer_id = #{@user.id} and status = 'claimed'"
                           -open_reviews = Review.where(sql_statement).count

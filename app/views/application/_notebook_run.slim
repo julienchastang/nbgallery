@@ -1,14 +1,17 @@
--if @user.member?
-  div.ribbon-wrapper
-    div.github-fork-ribbon
-      -if Notebook.active?(nb)
-        -output = capture do 
+div.ribbon-wrapper
+  div.github-fork-ribbon
+    -if Notebook.active?(nb)
+      -output = capture do
+        -if @user.member?
           ==render partial: "custom_run_in_jupyter", locals: { nb: nb, ref: defined?(ref) ? ref: nil }
-        ==output
-        -if output.blank?
-          -if nblaunch_enabled_for?(nb)
+      ==output
+      -if output.blank?
+        -if nblaunch_enabled_for?(nb)
+          -if @user.member?
             a.run_jupyter href="#{launch_notebook_path(nb)}" target="_blank" rel="noopener noreferrer" data-direct-launch="true" Run in Jupyter
           -else
-            a.run_jupyter.disabled style="cursor: not-allowed; opacity: 0.6;" Run in Jupyter
-      -else
-        a.run_jupyter.disabled style="cursor: not-allowed; opacity: 0.6;" Run in Jupyter
+            a.run_jupyter href="#" data-sign-in-required="true" Run in Jupyter
+        -else
+          a.run_jupyter.disabled style="cursor: not-allowed; opacity: 0.6;" Run in Jupyter
+    -else
+      a.run_jupyter.disabled style="cursor: not-allowed; opacity: 0.6;" Run in Jupyter

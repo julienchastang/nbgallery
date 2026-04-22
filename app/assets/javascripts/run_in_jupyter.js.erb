@@ -31,6 +31,12 @@ $(document).ready(function() {
   });
 
   $(document).on('click','.run_jupyter', function() {
+    if ($(this).data('sign-in-required')) {
+      $('#loginModal').modal('show');
+      makeAlert('error', '#loginModal .alert-container', 'Please sign in with Unidata JupyterHub to run this notebook.');
+      return false;
+    }
+
     if ($(this).data('direct-launch')) {
       return true;
     }

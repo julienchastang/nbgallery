@@ -11,11 +11,14 @@ function makeAlert(type, element_within, message){
   if (type == "success"){
     $(element_within).prepend("<div class='alert alert-success' role='alert'><i aria-hidden='true' class='fa fa-check-circle'></i>" + message + "<button aria-label='Dismiss alert' class='close' data-dismiss='alert'>&times;</button></div>");
   }
-  else if (type = "error"){
+  else if (type == "error"){
     $(element_within).prepend("<div class='alert alert-error' role='alert'><i aria-hidden='true' class='fa fa-times-circle'></i>" + message + "<button aria-label='Dismiss alert' class='close' data-dismiss='alert'>&times;</button></div>");
   }
   else if (type == "warning"){
     $(element_within).prepend("<div class='alert alert-warning' role='alert'><i aria-hidden='true' class='fa fa-exclamation-triangle'></i>" + message + "<button aria-label='Dismiss alert' class='close' data-dismiss='alert'>&times;</button></div>");
+  }
+  else if (type == "info"){
+    $(element_within).prepend("<div class='alert alert-info' role='alert'><i aria-hidden='true' class='fa fa-info-circle'></i>" + message + "<button aria-label='Dismiss alert' class='close' data-dismiss='alert'>&times;</button></div>");
   }
   else {
     $(element_within).prepend("<div class='alert alert-warning' role='alert'><i aria-hidden='true' class='fa fa-info-circle'></i>" + message + "<button aria-label='Dismiss alert' class='close' data-dismiss='alert'>&times;</button></div>");

@@ -33,7 +33,7 @@ $(document).ready(function() {
   $(document).on('click','.run_jupyter', function() {
     if ($(this).data('sign-in-required')) {
       $('#loginModal').modal('show');
-      makeAlert('error', '#loginModal .alert-container', 'Please sign in with Unidata JupyterHub to run this notebook.');
+      makeAlert('info', '#loginModal .alert-container', 'Sign in with Unidata JupyterHub to run this notebook.');
       return false;
     }
 

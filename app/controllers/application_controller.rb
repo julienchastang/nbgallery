@@ -358,7 +358,7 @@ class ApplicationController < ActionController::Base
       elsif defined? @subtitle and !@subtitle.nil? and !@subtitle.empty?
         title = "#{@subtitle}"
       elsif request.path == "#{root_path}"
-        title = "Home"
+        title = "Unidata Gallery"
       elsif request.path == "#{tags_path}/trusted"
         title = "Examples"
       else

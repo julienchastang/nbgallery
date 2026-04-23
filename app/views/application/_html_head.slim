@@ -12,7 +12,8 @@ meta charset="UTF-8"
 -if defined? nofollow
   meta name="robots" content="nofollow"
 link rel="search" type="application/opensearchdescription+xml" title="#{GalleryConfig.site.name}" href="/opensearch.xml"
-title #{setup_browser_titles}
+-page_title = content_for?(:title) ? yield(:title) : setup_browser_titles
+title #{page_title.presence || "Unidata Gallery"}
 
 -if defined? @notebook.description
   meta name="description" content="#{@notebook.description}"

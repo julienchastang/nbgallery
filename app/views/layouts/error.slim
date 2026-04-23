@@ -16,10 +16,8 @@ html
 div.center
   div.well id="errorLayout"
     a.logo-link href="#{root_path}"
-      -if modern_browser?
-        span.logo-nb.show-inline aria-hidden="true" style="display: none" NB
-        span.logo-gallery.show-inline aria-hidden="true" style="display: none" Gallery
-        span.sr-only N B Gallery Home
-      -else
-        ==image_tag("nbgallery_logo.png", alt: "NBGallery", id: "logo")
+      ==image_tag("nsf_official_logo.png", alt: "NSF", class: "logo-nsf")
+      span.logo-divider aria-hidden="true"
+      ==image_tag("unidata_horizontal.png", alt: "Unidata", class: "logo-unidata")
+      span.sr-only Unidata home
     ==yield

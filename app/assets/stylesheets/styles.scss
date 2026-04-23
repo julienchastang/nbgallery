@@ -297,22 +297,28 @@ body.page-admin header {
     box-shadow: 0 -1px 8px $tertiary-background;
 }
 .logo-link {
-    display: inline-block;
-    font-size: 38px;
+    align-items: center;
+    display: inline-flex;
+    gap: 10px;
     position: relative;
     text-decoration: none !important;
-    text-transform: lowercase;
     top: 2px;
-    .logo-nb {
-        background: $secondary-color;
-        border-radius: .6em;
-        color: #fff;
-        font-weight: bold;
-        letter-spacing: -2px;
-        padding: 1px 2px;
+    .logo-divider {
+        background: $primary-border-color;
+        display: inline-block;
+        height: 30px;
+        width: 1px;
     }
-    .logo-gallery {
-        color: $text-color;
+    .logo-nsf,
+    .logo-unidata {
+        display: block;
+        width: auto;
+    }
+    .logo-nsf {
+        height: 34px;
+    }
+    .logo-unidata {
+        height: 26px;
     }
 }
 #topNavbar {

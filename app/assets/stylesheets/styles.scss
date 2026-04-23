@@ -300,6 +300,7 @@ body.page-admin header {
     align-items: center;
     display: inline-flex;
     gap: 10px;
+    max-width: 100%;
     position: relative;
     text-decoration: none !important;
     top: 2px;
@@ -319,6 +320,18 @@ body.page-admin header {
     }
     .logo-unidata {
         height: 26px;
+    }
+    @media all and (max-width: 600px) {
+        gap: 8px;
+        .logo-divider {
+            height: 24px;
+        }
+        .logo-nsf {
+            height: 28px;
+        }
+        .logo-unidata {
+            height: 22px;
+        }
     }
 }
 #topNavbar {
@@ -1006,6 +1019,15 @@ body.notebook-deprecated {
         font-size: 42px;
         margin-bottom: .5em;
     }
+    .logo-link img {
+        margin-bottom: 0;
+    }
+    .logo-link .logo-nsf {
+        height: 34px;
+    }
+    .logo-link .logo-unidata {
+        height: 26px;
+    }
     img {
         height: 55px;
         margin-bottom: 2.5em;
@@ -1048,6 +1070,12 @@ body.notebook-deprecated {
         width: 100%;
         .logo-link {
             font-size: 20px;
+        }
+        .logo-link .logo-nsf {
+            height: 28px;
+        }
+        .logo-link .logo-unidata {
+            height: 22px;
         }
         h1 {
             font-size: 300%;

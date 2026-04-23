@@ -4,7 +4,7 @@
     div.super-container
       div.content-container
         div.sub-container
-          h1.search-title Welcome to the Jupyter Notebooks Repository
+          h1.search-title Welcome to the Unidata Science Gateway Jupyter Notebook Gallery
           form.search-form id="bigSearchBar" action="#{notebooks_path}" role="search"
             div.form-group
               input.searchFieldBox.form-control name="q" placeholder="Search" type="search" value=""
@@ -18,6 +18,8 @@
                   span.sr-only Search
             div.form-group
               a href="#{notebooks_path}?q=" id="homeAdvancedSearchLink" Advanced Search Guide
+      div.content-container
+        p.hero-image-credit Image credit: NASA/Dave Hughes
     section.content-container id="main" role="main"
       ==render partial: 'alert_container'
       -user_pref = UserPreference.find_by(user_id: @user.id)

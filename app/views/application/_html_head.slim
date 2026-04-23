@@ -19,7 +19,9 @@ title #{setup_browser_titles}
 -else
   meta name="description" content="#{GalleryConfig.site.name} is a Jupyter notebook sharing and collaboration platform"
 ==csrf_meta_tag
-==favicon_link_tag "nb.ico"
+==favicon_link_tag "favicons/favicon.ico"
+==favicon_link_tag "favicons/favicon-16x16.png", rel: "icon", type: "image/png", sizes: "16x16"
+==favicon_link_tag "favicons/favicon-32x32.png", rel: "icon", type: "image/png", sizes: "32x32"
 ==javascript_include_tag "application"
 ==stylesheet_link_tag "application", media: "all"
 -user_pref = UserPreference.find_by(user_id: @user.id)

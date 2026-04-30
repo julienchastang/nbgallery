@@ -1,2 +1,15 @@
 div.content-container.inline-form
-  ==render partial: "devise/shared/jupyterhub_sso_gateway", locals: { return_to: root_path }
+  -if params[:local] == "1" && GalleryConfig.username_login_allowed == true
+    ==form_for(resource, as: resource_name, url: session_path(resource_name)) do |f|
+      div.form-group
+        div.input-group
+          label.input-group-addon.input-min-width for="loginEmail" Email
+          input.form-control id="loginEmail" type="email" autofocus="autofocus" autocomplete="email" placeholder="Email Address" name="user[email]" required="required" value=resource.email
+      div.form-group
+        div.input-group
+          label.input-group-addon.input-min-width for="loginPassword" Password
+          input.form-control id="loginPassword" type="password" autocomplete="current-password" placeholder="Password" name="user[password]" required="required"
+      div.form-group.right
+        input.btn.btn-primary role="button" type="submit" name="commit" value="Log in"
+  -else
+    ==render partial: "devise/shared/jupyterhub_sso_gateway", locals: { return_to: root_path }
